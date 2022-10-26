@@ -1,0 +1,1 @@
+import{u as s,o as e,c as t}from"./index.acd32430.js";const a={class:"my-2"},_={__name:"Home",setup(o){return s(),(r,c)=>(e(),t("div",a,"J\xF3l \xED sk\xF3kassa talningar forriti\xF0"))}};export{_ as default};

@@ -1,1 +1,0 @@
-import{_ as o}from"./_plugin-vue_export-helper.cdc0426e.js";import{o as t,c as n,a as e,t as s}from"./index.a6ebe978.js";const a={},i=e("h1",{class:"text-3xl"},"Thanks for registering!",-1);function c(r,l){return t(),n("div",null,[i,e("p",null," Please confirm your email to finishing registering: "+s(r.$route.query.email),1)])}const _=o(a,[["render",c]]);export{_ as default};
