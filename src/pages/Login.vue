@@ -21,7 +21,7 @@
       provider
         ? await loginWithSocialProvider(provider)
         : await login(form.value);
-      router.push({ name: "Me" });
+      router.push({ name: "Home" });
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -41,9 +41,9 @@
       <a @click.prevent="handleLogin('github')">Github</a>
     </div>
   </div> -->
-  <div class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="px-8 py-6 mt-4 text-left bg-white shadow-lg">
-      <h3 class="text-2xl font-bold text-center">Login to your account</h3>
+  <div class="w-full flex justify-center">
+    <div class="w-1/3 px-8 py-6 mt-4 text-left bg-gray-200 rounded shadow-lg">
+      <h3 class="text-2xl font-bold text-center">Innskráning</h3>
       <form @submit.prevent="handleLogin()">
         <div class="mt-4">
           <div>
@@ -51,7 +51,7 @@
               v-model="form.email"
               type="email"
               name="email"
-              placeholder="Email"
+              placeholder="Netfang"
               class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
             />
           </div>
@@ -59,19 +59,16 @@
             <input
               v-model="form.password"
               type="password"
-              placeholder="Password"
+              placeholder="Lykilorð"
               class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
             />
           </div>
-          <div class="flex items-baseline justify-between">
+          <div class="flex justify-center">
             <button
-              class="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900"
+              class="px-6 py-2 mt-4 text-white bg-gray-500 rounded-lg hover:bg-green-500 hover:text-gray-800"
             >
-              Login
+              Skrá inn
             </button>
-            <a href="#" class="text-sm text-blue-600 hover:underline"
-              >Forgot password?</a
-            >
           </div>
         </div>
       </form>

@@ -3,18 +3,62 @@
   const { isLoggedIn } = useAuthUser();
 </script>
 <template>
-  <div class="flex bg-gray-500 text-white justify-between">
-    <ul class="flex gap-5 p-5">
-      <li><router-link :to="{ name: 'Home' }">Home</router-link></li>
-      <li><router-link :to="{ name: 'Me' }">Me</router-link></li>
-      <li><router-link :to="{ name: 'Girls' }">Girls</router-link></li>
-    </ul>
-    <ul v-if="isLoggedIn()" class="flex gap-5 bg-gray-700 p-5">
-      <li><router-link :to="{ name: 'Logout' }">Logout</router-link></li>
-    </ul>
-    <ul v-else class="flex gap-5 bg-gray-700 p-5">
-      <li><router-link :to="{ name: 'Login' }">Login</router-link></li>
-      <li><router-link :to="{ name: 'Register' }">Register</router-link></li>
-    </ul>
-  </div>
+  <nav class="flex items-center justify-between flex-wrap p-6 border-b-2">
+    <div>
+      <router-link :to="{ name: 'Home' }">
+        <img
+          src="https://www.kfum.is/skokassar/wp-content/uploads/sites/8/2019/11/skokassalogo.png"
+          alt="Joliskokassalogo"
+          width="200"
+          height="240"
+        />
+      </router-link>
+    </div>
+    <div class="">
+      <div class="flex justify-center text-sm lg:flex-grow">
+        <router-link
+          class="block mt-4 lg:inline-block lg:mt-0 text-lg text-black-200 border-b-4 border-transparent hover:border-gray-600 mx-6"
+          :to="{ name: 'Home' }"
+        >
+          Heim {{ routeName }}
+        </router-link>
+        <router-link
+          class="block mt-4 lg:inline-block lg:mt-0 text-lg text-black-200 border-b-4 border-transparent hover:border-pink-400 box-border mx-6"
+          :to="{ name: 'Girls' }"
+        >
+          Stelpur
+        </router-link>
+        <router-link
+          class="block mt-4 lg:inline-block lg:mt-0 text-lg text-black-200 border-b-4 border-transparent hover:border-blue-500 box-border mx-6"
+          :to="{ name: 'Boys' }"
+        >
+          Strákar
+        </router-link>
+        <router-link
+          class="block mt-4 lg:inline-block lg:mt-0 text-lg text-black-200 border-b-4 border-transparent hover:border-green-500 box-border mx-6"
+          :to="{ name: 'Boys' }"
+        >
+          Tölfræði
+        </router-link>
+      </div>
+    </div>
+    <div class="flex justify-end" style="width: 200px">
+      <div v-if="isLoggedIn()">
+        <router-link
+          class="inline-block text-md px-6 py-4 leading-none border rounded text-white bg-gray-500 hover:bg-red-600 hover:text-gray-800 mt-4 lg:mt-0"
+          :to="{ name: 'Logout' }"
+        >
+          Skrá út
+        </router-link>
+      </div>
+      <div v-else>
+        <router-link
+          class="inline-block text-md px-6 py-4 leading-none border rounded text-white bg-gray-500 hover:bg-green-500 hover:text-gray-800 mt-4 lg:mt-0"
+          :to="{ name: 'Login' }"
+        >
+          Skrá inn
+        </router-link>
+      </div>
+    </div>
+  </nav>
 </template>

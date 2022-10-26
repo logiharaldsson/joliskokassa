@@ -45,6 +45,8 @@ export default function useAuthUser() {
   const logout = async () => {
     const { error } = supabase.auth.signOut();
     if (error) throw error;
+    else {
+    }
   };
 
   /**

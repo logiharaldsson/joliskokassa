@@ -59,3 +59,30 @@ export async function createGiantBox(gender, box_age, year) {
   console.log("creat box", data);
   return true;
 }
+
+// Add action logs
+export async function logAction(
+  user,
+  gender,
+  age,
+  box_number,
+  action,
+  counter_change
+) {
+  const action_time = new Date();
+  const { data, error } = await supabase
+    .from("counter_log")
+    .insert([
+      {
+        user_name: user,
+        gender: gender,
+        age: age,
+        giant_box_id: box_number,
+        action: action,
+        counter_change,
+        action_time,
+      },
+    ]);
+  console.log("log action:", data);
+  return data;
+}

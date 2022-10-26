@@ -4,17 +4,20 @@ import useAuthUser from "@/composables/UseAuthUser";
 const routes = [
   {
     name: "EmailConfirmation",
-    path: "/joliskokassa/email-confirmation",
+    path: "/email-confirmation",
     component: () => import("@/pages/EmailConfirmation.vue"),
   },
   {
     name: "Home",
-    path: "/joliskokassa/",
+    path: "/",
+    meta: {
+      requiresAuth: true,
+    },
     component: () => import("@/pages/Home.vue"),
   },
   {
     name: "Me",
-    path: "/joliskokassa/me",
+    path: "/me",
     meta: {
       requiresAuth: true,
     },
@@ -22,34 +25,42 @@ const routes = [
   },
   {
     name: "Girls",
-    path: "/joliskokassa/girls",
+    path: "/girls",
     meta: {
       requiresAuth: true,
     },
     component: () => import("@/pages/Girls.vue"),
   },
   {
+    name: "Boys",
+    path: "/boys",
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("@/pages/Boys.vue"),
+  },
+  {
     name: "Login",
-    path: "/joliskokassa/login",
+    path: "/login",
     component: () => import("@/pages/Login.vue"),
   },
   {
     name: "ForgotPassword",
-    path: "/joliskokassa/forgotPassword",
+    path: "/forgotPassword",
     component: () => import("@/pages/ForgotPassword.vue"),
   },
   {
     name: "Logout",
-    path: "/joliskokassa/logout",
+    path: "/logout",
     beforeEnter: async () => {
       const { logout } = useAuthUser();
       await logout();
-      return { name: "Home" };
+      return { name: "Login" };
     },
   },
   {
     name: "Register",
-    path: "/joliskokassa/register",
+    path: "/register",
     component: () => import("@/pages/Register.vue"),
   },
 ];

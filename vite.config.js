@@ -10,5 +10,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"), // map '@' to './src'
     },
   },
-  base: "/joliskokassa/",
+  // base: "/joliskokassa/",
 });

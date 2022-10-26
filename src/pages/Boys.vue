@@ -5,7 +5,6 @@
     getBoxName,
     incrementBox,
     getAllBoxesCategory,
-    logAction,
   } from "@/composables/UseData";
 
   const { user } = useAuthUser();
@@ -24,7 +23,6 @@
     getBoxName,
     getAllBoxesCategory,
     createGiantBox,
-    logAction,
   } from "@/composables/UseData";
 
   export default {
@@ -36,7 +34,7 @@
         ageIndex: 0,
         genderCategories: ["stelpur", "strákar"],
         genderDBCategories: ["girls", "boys"],
-        genderIndex: 0,
+        genderIndex: 1,
         fetchData: null,
         fetchBoxNumber: null,
         fetchBoxCounter: 0,
@@ -53,7 +51,7 @@
     },
     async created() {
       // await this.getHistory();
-      await this.fetchAllBoxes("girls", "1-2", "2022");
+      await this.fetchAllBoxes("boys", "1-2", "2022");
     },
     computed: {
       isMobile() {
@@ -88,9 +86,6 @@
           })
           .then(() => (this.boxIndex = this.sbBoxCounters.length - 1));
       },
-      // async logUserAction(gender, age, box_number, action, counter_change) {
-      //   logAction(user.email, gender, age, box_number, action, counter_change).then(data => console.log('got log user action data', data))
-      // }
 
       //   async transformLogs(logs) {
       //     const transformedLogs = [];
@@ -210,7 +205,7 @@
         this.fetchAllBoxes(this.currentDbGender, this.currentDbAge, "2022");
       },
       async ageButton(number) {
-        this.fetchAllBoxes("girls", this.agesCategories[number], "2022");
+        this.fetchAllBoxes("boys", this.agesCategories[number], "2022");
         this.ageIndex = number;
       },
       changeBoxIndex(newIndex) {
@@ -262,10 +257,10 @@
       v-for="(age, index) in agesCategories"
       @click="ageButton(index)"
       :class="{
-        'bg-pink-400': index === ageIndex,
+        'bg-blue-400': index === ageIndex,
         'text-white': index === ageIndex,
       }"
-      class="target:bg-pink-200 sidebar-item border rounded p-2 m-2 w-36 h-16 text-center shadow-xl hover:bg-pink-300 hover:text-white"
+      class="target:bg-blue-200 sidebar-item border rounded p-2 m-2 w-36 h-16 text-center shadow-xl hover:bg-blue-300 hover:text-white"
       :key="`age-${index}`"
       :id="`${age}`"
     >
@@ -276,7 +271,7 @@
   <div class="w-screen flex flex-col sm:items-center items-end">
     <!-- Gender/age text title -->
     <div class="relative w-3/5 mr-6 sm:mr-0 flex justify-center text-2xl my-2">
-      Stelpur {{ currentAge }}
+      Strákar {{ currentAge }}
     </div>
     <!-- Tally box -->
     <div class="flex">
@@ -297,7 +292,7 @@
         </button>
       </div>
       <div
-        class="relative h-60 w-44 xs:w-80 mx-3 flex-col justify-center bg-pink-300 rounded-lg shadow-xl shadow-slate-300/60"
+        class="relative h-60 w-44 xs:w-80 mx-3 flex-col justify-center bg-blue-300 rounded-lg shadow-xl shadow-slate-300/60"
       >
         <!-- Counter -->
         <div class="flex justify-center items-center px-7 pt-9 pb-2 mx-7 mt-5">
@@ -356,10 +351,10 @@
         @click="changeBoxIndex(index)"
         :key="giantBox + index"
         :class="{
-          'bg-pink-400': index === boxIndex,
+          'bg-blue-400': index === boxIndex,
           'text-white': index === boxIndex,
         }"
-        class="m-1 p-2 px-4 border shadow-xl rounded hover:bg-pink-300 hover:text-white"
+        class="m-1 p-2 px-4 border shadow-xl rounded hover:bg-blue-300 hover:text-white"
       >
         {{ index + 1 }}
       </button>
