@@ -92,61 +92,19 @@
         );
         const { data, table } = await getHistoryLog();
         this.historyTable = table;
+        await this.getTotalBoxCount("2022");
       },
       async fetchAllBoxes(gender, age, year) {
-        getAllBoxesCategory(gender, age, year)
+        await getAllBoxesCategory(gender, age, year)
           .then((data) => {
             this.sbBoxCounters = data;
           })
           .then(() => (this.boxIndex = this.sbBoxCounters.length - 1));
+        await this.getTotalBoxCount("2022");
       },
       async getTotalBoxCount(year) {
         total_boxes(year).then((data) => (this.fetchTotalCount = data));
       },
-
-      // async addGiantBox() {
-      //   const data = await createGiantBox(
-      //     this.currentDbGender,
-      //     this.currentDbAge,
-      //     "2022"
-      //   );
-      //   this.fetchAllBoxes(this.currentDbGender, this.currentDbAge, "2022");
-      //   const { d, table } = await getHistoryLog();
-      //   this.historyTable = table;
-      //   Swal.fire({
-      //     title: "Viltu búa til nýjan trölla kassa?",
-      //     icon: "question",
-      //     showCancelButton: true,
-      //     confirmButtonColor: "#22C55E",
-      //     cancelButtonColor: "#EF4444",
-      //     cancelButtonText: "Nei ekki núna",
-      //     confirmButtonText: "Já endilega!",
-      //   }).then(async (result) => {
-      //     if (result.isConfirmed) {
-      //       const giantBoxData = {
-      //         gender: this.currentDbGender,
-      //         age: this.currentDbAge,
-      //       };
-      //       try {
-      //         await JisDataServices.addGiantBox(
-      //           JSON.stringify(giantBoxData)
-      //         ).then((response) => {
-      //           console.log("Giant box add", response),
-      //             this.getGirls().then(() => this.getHistory());
-      //         });
-      //       } catch (error) {
-      //         console.log(error);
-      //         Swal.fire({
-      //           icon: "error",
-      //           title: "Villa kom upp",
-      //           text: "Ekki tókst að búa til nýjan tröllakassa!",
-      //           footer:
-      //             '<a href="mailto: logiharaldss@gmail.com">Hafa samband - logiharaldss@gmail.com</a>',
-      //         });
-      //       }
-      //     }
-      //   });
-      // },
 
       addToBox(increment) {
         const boxBodyData = {
@@ -176,7 +134,6 @@
           );
       },
       async tallyButton(number) {
-        // this.addToBox(number);
         await this.updateBoxCounter(
           number,
           this.currentDbGender,
@@ -223,15 +180,6 @@
             }
           }
         });
-        // const data = await createGiantBox(
-        //   this.currentDbGender,
-        //   this.currentDbAge,
-        //   "2022"
-        // );
-        // console.log("add giant box:", data);
-        // this.fetchAllBoxes(this.currentDbGender, this.currentDbAge, "2022");
-        // const { d, table } = await getHistoryLog();
-        // this.historyTable = table;
       },
       async ageButton(number) {
         this.fetchAllBoxes("girls", this.agesCategories[number], "2022");
@@ -246,44 +194,17 @@
         const table = document.getElementById("historyTable");
         table.innerHTML = newValue;
       },
-      //   async historyLogsString(newValue) {
-      //     const logs = JSON.parse(newValue);
-      //     const historyLogsIceCopy = [];
-      //     const transformedLogs = await this.transformLogs(logs);
-      //     this.historyLogsIce = JSON.parse(JSON.stringify(transformedLogs));
-      //     const historyTable = document.getElementById("historyTable");
-      //     historyTable.innerHTML = "";
-      //     let tableRow = "";
-      //     this.historyLogsIce.forEach((log, index) => {
-      //       tableRow = `
-      //       <div class="grid grid-cols-6">
-      //       <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${
-      //         index % 2 !== 0 ? "bg-gray-100" : ""
-      //       }">${log.gender}</div>
-      //       <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${
-      //         index % 2 !== 0 ? "bg-gray-100" : ""
-      //       }">${log.age}</div>
-      //                 <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${
-      //                   index % 2 !== 0 ? "bg-gray-100" : ""
-      //                 }">${log.giant_box_id}</div>
-      //       <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${
-      //         index % 2 !== 0 ? "bg-gray-100" : ""
-      //       }">${log.action}</div>
-      //                 <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${
-      //                   index % 2 !== 0 ? "bg-gray-100" : ""
-      //                 }">${log.counter_change}</div>
-      //       <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${
-      //         index % 2 !== 0 ? "bg-gray-100" : ""
-      //       }">${log.action_time}</div>
-      //       </div>`;
-      //       historyTable.innerHTML += tableRow;
-      //     });
-      //   },
     },
   };
 </script>
 
 <template>
+  <!-- Total count -->
+  <div class="absolute right-0">
+    <div class="mr-6 pr-6 text-5xl">
+      <h1><i class="mt-10 fa-solid fa-gift"></i> {{ fetchTotalCount }}</h1>
+    </div>
+  </div>
   <!-- Sidebar -->
   <div class="flex flex-col absolute z-20">
     <button
@@ -403,7 +324,6 @@
       </div>
       <div id="historyTable" class="w-full"></div>
     </div>
-    <div class="m-6 p-6">{{ fetchTotalCount }}</div>
   </div>
 </template>
 
