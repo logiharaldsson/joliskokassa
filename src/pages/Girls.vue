@@ -6,14 +6,17 @@
     incrementBox,
     getAllBoxesCategory,
     logAction,
+    getHistoryLog,
+    total_boxes,
   } from "@/composables/UseData";
 
   const { user } = useAuthUser();
+
   const { supabase } = useSupabase();
 </script>
 <script>
   // import JisDataServices from "../services/JisDataServices";
-  //   import Swal from "sweetalert2";
+  // import Swal from "sweetalert2";
   //   import dayjs from "dayjs";
   //   import isToday from "dayjs/plugin/isToday";
   //   import isYesterday from "dayjs/plugin/isYesterday";
@@ -25,6 +28,8 @@
     getAllBoxesCategory,
     createGiantBox,
     logAction,
+    getHistoryLog,
+    total_boxes,
   } from "@/composables/UseData";
 
   export default {
@@ -49,11 +54,16 @@
         historyLogsString: "",
         historyLogsIceCopy: [],
         sbBoxCounters: [],
+        historyTable: "",
+        fetchTotalCount: 0,
       };
     },
     async created() {
       // await this.getHistory();
       await this.fetchAllBoxes("girls", "1-2", "2022");
+      const { data, table } = await getHistoryLog();
+      this.historyTable = table;
+      await this.getTotalBoxCount("2022");
     },
     computed: {
       isMobile() {
@@ -77,9 +87,11 @@
     },
     methods: {
       async updateBoxCounter(increment, gender, age, boxNumber, year) {
-        incrementBox(increment, gender, age, boxNumber, year).then(
+        await incrementBox(increment, gender, age, boxNumber, year).then(
           (data) => (this.sbBoxCounters[this.boxIndex] = data)
         );
+        const { data, table } = await getHistoryLog();
+        this.historyTable = table;
       },
       async fetchAllBoxes(gender, age, year) {
         getAllBoxesCategory(gender, age, year)
@@ -88,82 +100,54 @@
           })
           .then(() => (this.boxIndex = this.sbBoxCounters.length - 1));
       },
-      // async logUserAction(gender, age, box_number, action, counter_change) {
-      //   logAction(user.email, gender, age, box_number, action, counter_change).then(data => console.log('got log user action data', data))
-      // }
+      async getTotalBoxCount(year) {
+        total_boxes(year).then((data) => (this.fetchTotalCount = data));
+      },
 
-      //   async transformLogs(logs) {
-      //     const transformedLogs = [];
-      //     await logs.forEach((log) => {
-      //       if (log.action === "create giant box") {
-      //         log.action = "Nýr kassi";
-      //       }
-      //       let relativeDay = "";
-      //       if (dayjs(log.action_time).isToday()) {
-      //         console.log("í dag", log.action_time);
-      //         relativeDay = `${dayjs(log.action_time).format(
-      //           "HH:mm:ss"
-      //         )} - í dag`;
-      //       } else if (dayjs(log.action_time).isYesterday()) {
-      //         relativeDay = `${dayjs(log.action_time).format(
-      //           "HH:mm:ss"
-      //         )} - í gær`;
-      //       } else {
-      //         relativeDay = `${dayjs(log.action_time).format(
-      //           "HH:mm:ss - D MMM"
-      //         )}`;
-      //       }
-      //       const logObj = {
-      //         id: log.id,
-      //         gender: log.gender === "boys" ? "Strárkar" : "Stelpur",
-      //         age: `${log.age} ára`,
-      //         action_time: relativeDay,
-      //         giant_box_id: log.giant_box_id,
-      //         counter_change: log.counter_change,
-      //         action:
-      //           log.action === "1" || log.action === "5"
-      //             ? `+${log.action}`
-      //             : log.action,
+      // async addGiantBox() {
+      //   const data = await createGiantBox(
+      //     this.currentDbGender,
+      //     this.currentDbAge,
+      //     "2022"
+      //   );
+      //   this.fetchAllBoxes(this.currentDbGender, this.currentDbAge, "2022");
+      //   const { d, table } = await getHistoryLog();
+      //   this.historyTable = table;
+      //   Swal.fire({
+      //     title: "Viltu búa til nýjan trölla kassa?",
+      //     icon: "question",
+      //     showCancelButton: true,
+      //     confirmButtonColor: "#22C55E",
+      //     cancelButtonColor: "#EF4444",
+      //     cancelButtonText: "Nei ekki núna",
+      //     confirmButtonText: "Já endilega!",
+      //   }).then(async (result) => {
+      //     if (result.isConfirmed) {
+      //       const giantBoxData = {
+      //         gender: this.currentDbGender,
+      //         age: this.currentDbAge,
       //       };
-      //       transformedLogs.push(logObj);
-      //     });
-      //     return transformedLogs;
-      //   },
-      //   addGiantBox() {
-      //     Swal.fire({
-      //       title: "Viltu búa til nýjan trölla kassa?",
-      //       icon: "question",
-      //       showCancelButton: true,
-      //       confirmButtonColor: "#22C55E",
-      //       cancelButtonColor: "#EF4444",
-      //       cancelButtonText: "Nei ekki núna",
-      //       confirmButtonText: "Já endilega!",
-      //     }).then(async (result) => {
-      //       if (result.isConfirmed) {
-      //         const giantBoxData = {
-      //           gender: this.currentDbGender,
-      //           age: this.currentDbAge,
-      //         };
-      //         try {
-      //           await JisDataServices.addGiantBox(
-      //             JSON.stringify(giantBoxData)
-      //           ).then((response) => {
-      //             console.log("Giant box add", response),
-      //               this.getGirls().then(() => this.getHistory());
-      //           });
-      //         } catch (error) {
-      //           console.log(error);
-      //           Swal.fire({
-      //             icon: "error",
-      //             title: "Villa kom upp",
-      //             text: "Ekki tókst að búa til nýjan tröllakassa!",
-      //             footer:
-      //               '<a href="mailto: logiharaldss@gmail.com">Hafa samband - logiharaldss@gmail.com</a>',
-      //           });
-      //         }
+      //       try {
+      //         await JisDataServices.addGiantBox(
+      //           JSON.stringify(giantBoxData)
+      //         ).then((response) => {
+      //           console.log("Giant box add", response),
+      //             this.getGirls().then(() => this.getHistory());
+      //         });
+      //       } catch (error) {
+      //         console.log(error);
+      //         Swal.fire({
+      //           icon: "error",
+      //           title: "Villa kom upp",
+      //           text: "Ekki tókst að búa til nýjan tröllakassa!",
+      //           footer:
+      //             '<a href="mailto: logiharaldss@gmail.com">Hafa samband - logiharaldss@gmail.com</a>',
+      //         });
       //       }
-      //     });
-      //   },
+      //     }
+      //   });
+      // },
+
       addToBox(increment) {
         const boxBodyData = {
           gender: this.currentDbGender,
@@ -202,12 +186,52 @@
         );
       },
       async addGiantBox() {
-        const data = await createGiantBox(
-          this.currentDbGender,
-          this.currentDbAge,
-          "2022"
-        );
-        this.fetchAllBoxes(this.currentDbGender, this.currentDbAge, "2022");
+        Swal.fire({
+          title: "Viltu búa til nýjan trölla kassa?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#22C55E",
+          cancelButtonColor: "#EF4444",
+          cancelButtonText: "Nei ekki núna",
+          confirmButtonText: "Já endilega!",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            console.log("swal ok");
+            try {
+              const data = await createGiantBox(
+                this.currentDbGender,
+                this.currentDbAge,
+                "2022"
+              );
+              console.log("add giant box:", data);
+              this.fetchAllBoxes(
+                this.currentDbGender,
+                this.currentDbAge,
+                "2022"
+              );
+              const { d, table } = await getHistoryLog();
+              this.historyTable = table;
+            } catch (error) {
+              console.log(error);
+              Swal.fire({
+                icon: "error",
+                title: "Villa kom upp",
+                text: "Ekki tókst að búa til nýjan tröllakassa!",
+                footer:
+                  '<a href="mailto: logiharaldss@gmail.com">Hafa samband - logiharaldss@gmail.com</a>',
+              });
+            }
+          }
+        });
+        // const data = await createGiantBox(
+        //   this.currentDbGender,
+        //   this.currentDbAge,
+        //   "2022"
+        // );
+        // console.log("add giant box:", data);
+        // this.fetchAllBoxes(this.currentDbGender, this.currentDbAge, "2022");
+        // const { d, table } = await getHistoryLog();
+        // this.historyTable = table;
       },
       async ageButton(number) {
         this.fetchAllBoxes("girls", this.agesCategories[number], "2022");
@@ -218,6 +242,10 @@
       },
     },
     watch: {
+      historyTable(newValue) {
+        const table = document.getElementById("historyTable");
+        table.innerHTML = newValue;
+      },
       //   async historyLogsString(newValue) {
       //     const logs = JSON.parse(newValue);
       //     const historyLogsIceCopy = [];
@@ -364,7 +392,7 @@
         {{ index + 1 }}
       </button>
     </div>
-    <div>
+    <div class="mt-2">
       <div class="grid grid-cols-6">
         <div class="text-center p-2 border-b-4 border-gray-500">Kyn</div>
         <div class="text-center p-2 border-b-4 border-gray-500">Aldur</div>
@@ -375,7 +403,7 @@
       </div>
       <div id="historyTable" class="w-full"></div>
     </div>
-    <div class="m-6 p-6">footer</div>
+    <div class="m-6 p-6">{{ fetchTotalCount }}</div>
   </div>
 </template>
 

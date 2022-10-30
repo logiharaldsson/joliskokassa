@@ -4,6 +4,7 @@ import { ref } from "vue";
 // user is set outside of the useAuthUser function
 // so that it will act as global state and always refer to a single user
 const user = ref(null);
+// const user = null;
 
 export default function useAuthUser() {
   const { supabase } = useSupabase();

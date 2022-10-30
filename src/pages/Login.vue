@@ -29,20 +29,10 @@
   };
 </script>
 <template>
-  <!-- <div class="flex max-w-lg m-auto">
-    <form @submit.prevent="handleLogin()">
-      <h1 class="text-3xl mb-5">Login</h1>
-      <label>Email <input v-model="form.email" type="email" /></label>
-      <label>Password <input v-model="form.password" type="password" /></label>
-      <button class="mx-2">Login</button>
-      <router-link to="/forgotPassword">Forgot Password?</router-link>
-    </form>
-    <div class="mt-5">
-      <a @click.prevent="handleLogin('github')">Github</a>
-    </div>
-  </div> -->
   <div class="w-full flex justify-center">
-    <div class="w-1/3 px-8 py-6 mt-4 text-left bg-gray-200 rounded shadow-lg">
+    <div
+      class="lg:w-96 md:w-1/3 sm:w-2/4 px-8 py-6 mt-4 text-left bg-gray-200 rounded shadow-lg"
+    >
       <h3 class="text-2xl font-bold text-center">Innskráning</h3>
       <form @submit.prevent="handleLogin()">
         <div class="mt-4">
@@ -55,7 +45,7 @@
               class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
             />
           </div>
-          <div class="mt-4">
+          <div class="mt-2">
             <input
               v-model="form.password"
               type="password"
@@ -65,7 +55,7 @@
           </div>
           <div class="flex justify-center">
             <button
-              class="px-6 py-2 mt-4 text-white bg-gray-500 rounded-lg hover:bg-green-500 hover:text-gray-800"
+              class="px-6 py-2 mt-4 text-white bg-gray-400 rounded-lg hover:bg-green-500"
             >
               Skrá inn
             </button>

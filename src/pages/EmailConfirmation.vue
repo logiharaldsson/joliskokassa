@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1 class="text-3xl">Thanks for registering!</h1>
+    <h1 class="text-3xl">Takk fyrir skráninguna!</h1>
     <p>
-      Please confirm your email to finishing registering:
+      Vinsamlegast staðfestið nýskráningu
       {{ $route.query.email }}
     </p>
   </div>

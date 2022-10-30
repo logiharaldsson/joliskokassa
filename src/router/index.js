@@ -40,6 +40,14 @@ const routes = [
     component: () => import("@/pages/Boys.vue"),
   },
   {
+    name: "Statistics",
+    path: "/statistics",
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import("@/pages/Statistics.vue"),
+  },
+  {
     name: "Login",
     path: "/login",
     component: () => import("@/pages/Login.vue"),

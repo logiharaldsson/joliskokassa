@@ -20,7 +20,7 @@
           class="block mt-4 lg:inline-block lg:mt-0 text-lg text-black-200 border-b-4 border-transparent hover:border-gray-600 mx-6"
           :to="{ name: 'Home' }"
         >
-          Heim {{ routeName }}
+          Heim
         </router-link>
         <router-link
           class="block mt-4 lg:inline-block lg:mt-0 text-lg text-black-200 border-b-4 border-transparent hover:border-pink-400 box-border mx-6"
@@ -36,7 +36,7 @@
         </router-link>
         <router-link
           class="block mt-4 lg:inline-block lg:mt-0 text-lg text-black-200 border-b-4 border-transparent hover:border-green-500 box-border mx-6"
-          :to="{ name: 'Boys' }"
+          :to="{ name: 'Statistics' }"
         >
           Tölfræði
         </router-link>
@@ -45,7 +45,7 @@
     <div class="flex justify-end" style="width: 200px">
       <div v-if="isLoggedIn()">
         <router-link
-          class="inline-block text-md px-6 py-4 leading-none border rounded text-white bg-gray-500 hover:bg-red-600 hover:text-gray-800 mt-4 lg:mt-0"
+          class="inline-block text-md px-6 py-4 leading-none border rounded-lg text-white bg-gray-400 hover:bg-red-500 mt-4 lg:mt-0"
           :to="{ name: 'Logout' }"
         >
           Skrá út
@@ -53,10 +53,16 @@
       </div>
       <div v-else>
         <router-link
-          class="inline-block text-md px-6 py-4 leading-none border rounded text-white bg-gray-500 hover:bg-green-500 hover:text-gray-800 mt-4 lg:mt-0"
+          class="inline-block text-md px-6 py-4 leading-none border rounded-lg text-white bg-gray-400 hover:bg-green-500 mt-4 lg:mt-0"
           :to="{ name: 'Login' }"
         >
           Skrá inn
+        </router-link>
+        <router-link
+          class="inline-block text-md px-6 py-4 leading-none border rounded-lg text-white bg-gray-400 hover:bg-green-500 mt-4 lg:mt-0"
+          :to="{ name: 'Register' }"
+        >
+          Ný skráning
         </router-link>
       </div>
     </div>

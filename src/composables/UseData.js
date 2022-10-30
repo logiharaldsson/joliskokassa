@@ -1,6 +1,9 @@
 // mouse.js
 import { ref, onMounted, onUnmounted } from "vue";
+import useAuthUser from "@/composables/UseAuthUser";
+
 import useSupabase from "./UseSupabase";
+const { user } = useAuthUser();
 
 const agesCategories = { "1-2": 1, "3-6": 2, "7-10": 3, "11-14": 4, "15+": 5 };
 
@@ -24,6 +27,16 @@ export async function incrementBox(x, gender, box_age, box_number, year) {
     q_year: year,
     x: x,
   });
+
+  const log = await logAction(
+    user.value.email,
+    gender,
+    box_age,
+    box_number,
+    x,
+    data
+  );
+  // const history = getHistoryLog();
   return data;
 }
 
@@ -33,7 +46,8 @@ export async function getAllBoxesCategory(gender, box_age, year) {
   let { data, error } = await supabase
     .from("giant_boxes")
     .select("box_count")
-    .match({ gender: gender, box_age: box_age, year: year });
+    .match({ gender: gender, box_age: box_age, year: year })
+    .order("box_number", { ascending: true });
   let box_count = data.map((count) => count.box_count);
 
   return box_count;
@@ -45,7 +59,6 @@ export async function createGiantBox(gender, box_age, year) {
   let boxes = await getAllBoxesCategory(gender, box_age, year);
   let box_number = boxes.length + 1;
   let name = `${gender}-${agesCategories[box_age]}-${year}`;
-  console.log("name testing", name);
   const { data, error } = await supabase.from("giant_boxes").insert([
     {
       gender: gender,
@@ -55,34 +68,104 @@ export async function createGiantBox(gender, box_age, year) {
       name: name,
     },
   ]);
-  // let box_count = data.map((count) => count.box_count);
-  console.log("creat box", data);
-  return true;
+
+  // Logging action - create new box
+  const log = await logAction(
+    user.value.email,
+    gender,
+    box_age,
+    box_number,
+    "nýr kassi",
+    0
+  );
+
+  return data;
 }
 
 // Add action logs
 export async function logAction(
-  user,
+  user_name,
   gender,
   age,
   box_number,
   action,
   counter_change
 ) {
-  const action_time = new Date();
-  const { data, error } = await supabase
+  // console.log("user object", user.value.email);
+  const { supabase } = useSupabase();
+  // const action_time = new Date();
+  const { data, error } = await supabase.from("counter_log").insert([
+    {
+      user_name: user_name,
+      gender: gender,
+      age: age,
+      giant_box_id: box_number,
+      action: action,
+      counter_change,
+      action_time: new Date(),
+    },
+  ]);
+  return data;
+}
+
+export async function getHistoryLog() {
+  const { supabase } = useSupabase();
+  let { data, error } = await supabase
     .from("counter_log")
-    .insert([
-      {
-        user_name: user,
-        gender: gender,
-        age: age,
-        giant_box_id: box_number,
-        action: action,
-        counter_change,
-        action_time,
-      },
-    ]);
-  console.log("log action:", data);
+    .select("*")
+    .limit(15)
+    .order("id", { ascending: false });
+
+  let table = "";
+  data.forEach((log, index) => {
+    let genderClass =
+      log.gender === "girls" ? "text-pink-500" : "text-blue-500";
+    let tableRow = `
+      <div class="grid grid-cols-6">
+      <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${genderClass} ${
+      index % 2 !== 0 ? "bg-gray-100" : ""
+    }">${log.gender === "girls" ? "Stelpur" : "Strákar"}</div>
+      <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${genderClass} ${
+      index % 2 !== 0 ? "bg-gray-100" : ""
+    }">${log.age}</div>
+                <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${genderClass} ${
+      index % 2 !== 0 ? "bg-gray-100" : ""
+    }">${log.giant_box_id}</div>
+      <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${genderClass} ${
+      index % 2 !== 0 ? "bg-gray-100" : ""
+    }">${log.action}</div>
+                <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${genderClass} ${
+      index % 2 !== 0 ? "bg-gray-100" : ""
+    }">${log.counter_change}</div>
+      <div class="text-center p-2 pb-3 border-b-2 border-gray-500 ${genderClass} ${
+      index % 2 !== 0 ? "bg-gray-100" : ""
+    }">${dayjs(log.action_time).format("HH:mm:ss - D MMM")}</div>
+      </div>`;
+    table += tableRow;
+  });
+
+  return { data, table };
+}
+
+// Add to box counter by givne amount (x)
+export async function total_boxes(q_year) {
+  const { supabase } = useSupabase();
+  let { data, error } = await supabase.rpc("total_boxes", {
+    q_year,
+  });
+
+  console.log(" total boxes:", data);
+  return data;
+}
+
+// Add to box counter by givne amount (x)
+export async function total_gender(q_year, q_gender) {
+  const { supabase } = useSupabase();
+  let { data, error } = await supabase.rpc("total_gender", {
+    q_year,
+    q_gender,
+  });
+
+  console.log(" total gender:", data);
   return data;
 }
