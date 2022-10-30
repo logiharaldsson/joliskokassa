@@ -1,1 +1,0 @@
-import{o as a,c,a as r,t as i}from"./index.acd32430.js";const l=(e,t)=>{const o=e.__vccOpts||e;for(const[n,s]of t)o[n]=s;return o},f={},_=r("h1",{class:"text-3xl"},"Thanks for registering!",-1);function m(e,t){return a(),c("div",null,[_,r("p",null," Please confirm your email to finishing registering: "+i(e.$route.query.email),1)])}const g=l(f,[["render",m]]);export{g as default};
