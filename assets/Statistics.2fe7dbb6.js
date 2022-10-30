@@ -1,0 +1,1 @@
+import{_ as t}from"./_plugin-vue_export-helper.cdc0426e.js";import{o as e,c as s}from"./index.840f30e6.js";const c={},o={class:"text-center text-xl"};function r(n,a){return e(),s("div",o,"\xDEessi s\xED\xF0a er \xED vinnslu")}const f=t(c,[["render",r]]);export{f as default};
