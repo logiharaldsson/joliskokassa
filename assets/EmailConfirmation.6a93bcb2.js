@@ -1,1 +1,0 @@
-import{_ as a}from"./_plugin-vue_export-helper.cdc0426e.js";import{o as n,c as s,a as e,t as r}from"./index.840f30e6.js";const o={},i=e("h1",{class:"text-3xl"},"Takk fyrir skr\xE1ninguna!",-1);function c(t,l){return n(),s("div",null,[i,e("p",null," Vinsamlegast sta\xF0festi\xF0 n\xFDskr\xE1ningu "+r(t.$route.query.email),1)])}const _=a(o,[["render",c]]);export{_ as default};
