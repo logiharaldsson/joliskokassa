@@ -169,3 +169,14 @@ export async function total_gender(q_year, q_gender) {
   console.log(" total gender:", data);
   return data;
 }
+
+// Get total boxes by group
+export async function total_group_gender(q_year) {
+  const { supabase } = useSupabase();
+  let { data, error } = await supabase.rpc("get_total_group_gender", {
+    q_year,
+  });
+
+  console.log(" total gender:", data);
+  return data;
+}

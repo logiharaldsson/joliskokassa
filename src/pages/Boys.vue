@@ -215,7 +215,7 @@
   <div class="w-screen flex flex-col sm:items-center items-end">
     <!-- Gender/age text title -->
     <div class="relative w-3/5 mr-6 sm:mr-0 flex justify-center text-2xl my-2">
-      Stelpur {{ currentAge }}
+      Strákar {{ currentAge }}
     </div>
     <!-- Tally box -->
     <div class="flex">

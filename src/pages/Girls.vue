@@ -8,6 +8,7 @@
     logAction,
     getHistoryLog,
     total_boxes,
+    total_group_gender,
   } from "@/composables/UseData";
 
   const { user } = useAuthUser();
@@ -30,6 +31,7 @@
     logAction,
     getHistoryLog,
     total_boxes,
+    total_group_gender,
   } from "@/composables/UseData";
 
   export default {
@@ -86,6 +88,12 @@
       },
     },
     methods: {
+      async getAllStats(year) {
+        await total_group_gender("2022").then((data) => {
+          console.log("data", data);
+        });
+        return "yes";
+      },
       async updateBoxCounter(increment, gender, age, boxNumber, year) {
         await incrementBox(increment, gender, age, boxNumber, year).then(
           (data) => (this.sbBoxCounters[this.boxIndex] = data)
@@ -134,6 +142,7 @@
           );
       },
       async tallyButton(number) {
+        this.getAllStats("2022", "girls");
         await this.updateBoxCounter(
           number,
           this.currentDbGender,
